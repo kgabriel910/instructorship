@@ -8,3 +8,5 @@ I enjoy learning and teaching about STEM concepts, and I believe that knowledge 
 ### Psychology
 ### Computer Science
 ### Miscellaneous
+- Linear Algebra
+- Calculus
