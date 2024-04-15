@@ -5,5 +5,6 @@ I enjoy learning and teaching about STEM concepts, and I believe that knowledge 
 ### Biology
 ### Chemistry
 ### Physics
-### Computer Science
 ### Psychology
+### Computer Science
+### Miscellaneous
