@@ -3,10 +3,22 @@ I enjoy learning and teaching about STEM concepts, and I believe that knowledge 
 
 ## Here are the covered STEM concepts:
 ### Biology
+- Macromolecules
+- Biochemistry
+- Genetics
+- Physiology
 ### Chemistry
-### Physics
+- General Chemistry
+- Organic Chemistry
+- Physical Chemistry
 ### Psychology
+-  Cognition
+-  Learning
+-  Sociology
 ### Computer Science
-### Miscellaneous
+- R
+- Python
+- Machine Learning
+### Mathematics
 - Linear Algebra
 - Calculus
