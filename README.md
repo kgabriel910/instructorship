@@ -12,8 +12,8 @@ I enjoy learning and teaching about STEM concepts, and I believe that knowledge 
 -  Cognition & Learning
 -  Sociology
 ### [Computer Science]([url](https://github.com/kgabriel910/instructorship/tree/main/Computer%20Science))
-- R & Python
-- Machine Learning
+- Programming (R & Python)
+- Artificial Intelligence
 ### [Mathematics]([url](https://github.com/kgabriel910/instructorship/tree/main/Mathematics))
 - Linear Algebra
 - Calculus
