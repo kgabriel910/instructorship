@@ -1,7 +1,7 @@
-# FREE Introductory Courses
+## FREE Introductory Courses
 1) Neuronal Dynamics (Gerstner et al.)
 - Includes online book, python excercises, and video lectures
-- Textbook: ([url](https://neuronaldynamics.epfl.ch/online/index.html))
+- [Textbook]([url](https://neuronaldynamics.epfl.ch/online/index.html))
 - Exercises: [https://neuronaldynamics-exercises.readthedocs.io/en/latest/]
 - Lectures: [https://lcnwww.epfl.ch/gerstner/NeuronalDynamics-MOOCall.html]
 2) Computational Neuroscience (University of Washington)
