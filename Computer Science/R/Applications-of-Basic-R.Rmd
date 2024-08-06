@@ -1,0 +1,239 @@
+---
+title: "Apps of Basic R"
+author: "Kyla Gabriel"
+date: "2023-09-18"
+output: 
+  html_document: 
+    toc: true
+    toc_depth: 3
+    toc_float: true
+  html_notebook: default
+  pdf_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = T)
+```
+
+
+##########   Applications of Basic R   ########## 
+
+## Control Flow
+Content: if/else, for/ while Loops, switches
+```{r, eval=TRUE}
+## If/else
+ages = c(29, 85, 43, 66, 12, 18, 72)
+ifelse(2023-ages < 1980, "Born before 1980", "Born in/after 1980")
+```
+
+```{r, eval=TRUE}
+
+## For Loop
+ages = c(29, 85, 43, 66, 12, 18, 72)
+for(x in ages) {
+  if(2023-x < 1980) {
+    print("Born before 1980")
+  } else {
+    print("Born in/after 1980")
+  }
+}
+```
+
+```{r, eval=TRUE}
+## While Loop
+ages = c(29, 85, 43, 66, 12, 18, 72)
+count = 0
+i = 1
+while(count < 2) {
+  if(2023-ages[i] < 1980) {
+    print(ages[i])
+    count = count + 1
+  }
+  i = i + 1
+}
+```
+
+
+
+## Data Wrangling
+Content: mutate, filter, select, group_by, summarise, arrange, join, pivot, drop_na
+```{r, eval=TRUE}
+## Changing the Data Frame
+# Open libraries
+library(bmi713neiss)
+library(tidyverse)
+locations <- read.table("Lesson-03_data_files/location.txt", header = T, sep = "\t", quote = "", stringsAsFactors = F)
+# Manipulate df to output certain parameters based on age
+neiss_2013_2018 %>%
+  mutate(Age_Num = as.numeric(Age),         
+    birth_year = (Year-Age_Num)) %>%
+  filter(birth_year < 1980) %>% 
+  select(CPSC_Case_Number, Sex, Race, birth_year)  
+```
+```{r, eval=TRUE}
+# Manipulate df to give number of values based on age
+neiss_2013_2018 %>%
+  mutate(Age_Num = as.numeric(Age))%>% 
+  mutate(risk_status = case_when(
+      Age_Num >=18 & Age_Num <=24 ~ "risk 1",
+      Age_Num >=65 ~ "risk 2",
+      TRUE ~ "low risk")) %>%
+  group_by(risk_status) %>%      
+  summarise(count = n()) %>% 
+  ungroup %>%
+  arrange(count)
+
+
+# Another example 
+infant_ages <- neiss_2013_2018 %>% 
+  select(c("Age_Group_injury", "Age")) %>%
+  filter(Age_Group_injury == "Infants") %>%
+  select("Age")
+
+infant_ages$Age <- as.numeric(infant_ages$Age)
+infant_range <- range(infant_ages["Age"])
+```
+
+```{r, eval=TRUE}
+## Combining Files
+# Left join (same for right join)
+neiss_df <- neiss_2013_2018 %>% 
+  left_join(locations, by = c("Location" = "Code"))
+```
+```{r, eval=TRUE}
+# Inner join
+products_home <- data.table::fread("products_home.txt", header = TRUE, sep = '\t', fill = TRUE)
+products_home_new <- products_home %>%
+  inner_join(neiss_df, by = c("Code" = "Product_code")) %>%
+  filter(LOC != "HOME") %>%
+  count()
+```
+
+```{r, eval=TRUE}
+## Conglomerating Files
+# Pivot Wider
+neiss_sex_year <- data.frame(Sex = c(rep("FEMALE", 6), rep("MALE", 6)), 
+                             Year = rep(2013:2018, times = 2),
+                             count = c(168852, 166228, 163315, 171713, 178203, 168149, 208065, 201264, 195812, 203481, 208695, 193514))
+neiss_sex_year %>% 
+  pivot_wider(id_cols = Sex, names_from = Year, values_from = count)
+```
+```{r, eval=TRUE}
+# Pivot Longer
+neiss_agegrp_playground <- data.frame(Product = c("MONKEY BARS", "OTHER PLAYGROUND EQUIPMENT", "SLIDES"), 
+                             Children = c(14462, 9275, 8666),
+                             Adolescents = c(1865, 1943, 1155),
+                             Adults = c(229, 454, 278))
+neiss_agegrp_playground %>% 
+  pivot_longer(cols = -Product, names_to = "Age_Group", values_to = "count")
+```
+
+```{r, eval=TRUE}
+## NA Replacement
+# Drop & Replace NA 
+neiss_subset <- data.frame(CPSC_Case_Number = 1:6, 
+                           Diagnosis = c("INTERNAL INJURY", NA, "CONTUSION", "CONTUSION", "POISONING", NA),
+                           Location = c("SPORTS", NA, "PUBLIC", "SPORTS", NA, "HOME"),
+                           Product = c("SWIMMING POOL", "SOCCER", NA, "ICE SKATING", "STAIRS", "COINS"))
+neiss_subset %>%
+  replace_na(list(Product = "Unknown product")) %>% 
+  replace_na(list(Location = "Unknown location")) %>% 
+  drop_na(Diagnosis)
+
+```
+
+
+
+
+## Data Visualization
+Contains: barplots
+```{r, eval=TRUE}
+# Libraires needed
+library(bmi713neiss) # imported dataset we will use
+library(tidyverse) # uses dplyr in tidyverse
+
+# Read in data and adjust data frame
+# In terminal: cd\Users\kgabr\Documents\College Courses\Graduate (HMS)\Computing Skills\Asgmt 3\Lesson-03_data_files
+locations <- read.table("Lesson-03_data_files/location.txt", header = T)
+neiss_location <- neiss_2013_2018 %>% left_join(locations, by = c("Location" = "Code"))
+
+# Wrangle data so that 
+mean_age_loc <- neiss_location %>%
+  select(c("CPSC_Case_Number", "Age", "LOC", "Age_Group", "Product_1")) %>%
+  filter(LOC != "UNK") %>%
+  mutate(new_age_group = case_when(
+    Age_Group %in% c("Infants", "Children", "Adolescents") ~ "Pediatric",
+    TRUE ~ "Adult"
+  )) %>%
+  group_by(LOC) %>%
+  summarise(avg_age = mean(as.numeric(Age))) %>%
+  arrange(avg_age)
+
+# Return df and check for correctness
+mean_age_loc
+```
+
+```{r, eval=TRUE}
+## Barplot
+# Standard barplot
+barplot(height = mean_age_loc$avg_age, 
+        names.arg = mean_age_loc$LOC,
+        cex.names = 0.5,
+        main = "Average age of injuries in each location")
+```
+```{r, eval=TRUE}
+# Stacked Barplot (need to change a few things)
+year_loc_injuries <- neiss_location %>%
+  select(c("CPSC_Case_Number", "LOC", "Age_Group", "Year")) %>%
+  filter(LOC != "UNK") %>%
+  filter(Age_Group  == "Infants") %>%
+  group_by(Year, LOC) %>%
+  summarise(count = n()) %>% 
+  pivot_wider(id_cols = LOC, names_from = Year, values_from = count) %>% 
+  replace_na(list("2013" = 0, "2014" = 0, "2015" = 0, "2016" = 0, "2017" = 0, "2018" = 0)) %>% 
+  column_to_rownames("LOC")
+
+barplot(as.matrix(year_loc_injuries),
+        legend=rownames(year_loc_injuries),
+        args.legend = list(x = "bottomright", cex = 0.5),
+        main = "Infant injuries in each location, by year")
+```
+```{r, eval=TRUE}
+# Colored Barplot (shows multiple ways) 
+# 1) Set preset color 
+barplot(as.matrix(year_loc_injuries),
+        legend=rownames(year_loc_injuries),
+        args.legend = list(x = "bottomright", cex = 0.5),
+        col = c("red", "orange", "gold", "chartreuse2", "cyan2", "blue", "darkorchid", "hotpink"),
+        main = "Infant injuries in each location, by year")
+```
+```{r, eval=TRUE}
+# 2) Set color using hex code
+barplot(as.matrix(year_loc_injuries),
+        legend=rownames(year_loc_injuries),
+        args.legend = list(x = "bottomright", cex = 0.5),
+        col = c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7"),
+        main = "Infant injuries in each location, by year")
+```
+```{r, eval=TRUE}
+# 3) Set color using package
+library(RColorBrewer) # Loading a package to use pre-designed color palettes
+cbpal <- brewer.pal(8, "Set3")   # Choosing a color palette (Set3) with 8 colors in it
+barplot(as.matrix(year_loc_injuries),
+        legend=rownames(year_loc_injuries),
+        args.legend = list(x = "bottomright", cex = 0.5),
+        col = cbpal,
+        main = "Infant injuries in each location, by year")
+
+```
+
+```{r, eval=TRUE}
+# ggplot
+neiss_2018_location %>% ggplot() +     # alt to above; you can pipe since in tidyverse
+      geom_bar(aes(x = LOC, fill = Sex)) +
+      xlab("Location") + ylab("Number of injuries") +
+      theme(axis.text.x = element_text(hjust = 1, vjust = 1, angle = 45)) +
+      labs(title = "Number of injuries by location") +
+      scale_fill_viridis(option = "viridis", discrete = T) +
+      facet_grid(rows = vars(Sex))
+```
+```
