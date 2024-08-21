@@ -1,5 +1,5 @@
 ## FREE Introductory Courses
-- Neuronal Dynamics: interactive online book [url](https://neuronaldynamics.epfl.ch/online/index.html), Python exercises [url](https://neuronaldynamics-exercises.readthedocs.io/en/latest/), and video lectures: ([url]https://lcnwww.epfl.ch/gerstner/NeuronalDynamics-MOOCall.html)
+- Neuronal Dynamics: interactive online book [url](https://neuronaldynamics.epfl.ch/online/index.html), Python exercises [url](https://neuronaldynamics-exercises.readthedocs.io/en/latest/), and video lectures: [url](https://lcnwww.epfl.ch/gerstner/NeuronalDynamics-MOOCall.html)
 - Computational Neuroscience: instructional videos, readings, and quizzes [url](https://www.coursera.org/learn/computational-neuroscience)
 - Introduction To Neural Computation: lectures, slides, assignments, and study guides [url](https://ocw.mit.edu/courses/9-40-introduction-to-neural-computation-spring-2018/pages/lecture-notes/)
 
