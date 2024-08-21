@@ -12,7 +12,7 @@
 ### In-Depth Knowledge
 - Theoretical Neuroscience (Dayan & Abbott)
 - Bio-Inspired Artificial Intelligence (Floreano & Mattiussi)
-- Principles of Synthetic Intelligence (Basch)
+- Principles of Synthetic Intelligence (Bach)
 - Computational Techniques in Neuroscience (Malik et al.)
 - Computational Modeling Methods for Neuroscientists (Schutter) ([url](https://direct-mit-edu.ezp-prod1.hul.harvard.edu/books/edited-volume/3159/Computational-Modeling-Methods-for-Neuroscientists))
 - Brain Computation as Hierarchical Abstraction (Ballard) ([url](https://direct-mit-edu.ezp-prod1.hul.harvard.edu/books/monograph/4033/Brain-Computation-as-Hierarchical-Abstraction))
